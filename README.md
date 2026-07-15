@@ -8,7 +8,7 @@
 
 A production-ready numerical solver for the Fisher-KPP reaction-diffusion PDE with CPU and GPU backends, designed for scalability and scientific validation.
 
-## 🎯 Overview
+## Overview
 
 This project implements an explicit finite-difference solver for the Fisher-KPP reaction-diffusion equation:
 
@@ -22,7 +22,7 @@ Key features:
 - **HPC-ready** (SLURM integration, batch job support)
 - **Well-documented** (1,400+ lines of technical docs and analysis)
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Installation
 
@@ -82,7 +82,7 @@ For production use, choose device based on grid size:
 
 **Crossover: GPU becomes faster at ~256×256 grid (65K elements)**
 
-## 📚 Documentation
+## Documentation
 
 | Document | Purpose |
 |----------|---------|
@@ -92,7 +92,7 @@ For production use, choose device based on grid size:
 | [outputs/GPU_ANALYSIS_REPORT.md](outputs/GPU_ANALYSIS_REPORT.md) | Detailed performance analysis on Tesla V100 |
 | [TECH_BLOG_POST.md](TECH_BLOG_POST.md) | Non-technical overview for practitioners |
 
-## 🏗️ Project Structure
+## Project Structure
 
 ```
 reaction-diffusion-gpu/
@@ -113,7 +113,7 @@ reaction-diffusion-gpu/
 └── README.md                    # This file
 ```
 
-## 🧪 Testing
+## Testing
 
 ```bash
 # Run all tests
@@ -126,12 +126,12 @@ pytest tests/ --cov=reaction_diffusion
 pytest tests/test_solver.py -v
 ```
 
-**Status:** ✅ 42/42 tests passing
+**Status:** 42/42 tests passing
 - Solver: 12 tests (initialization, stability, time-stepping)
 - Domain decomposition: 11 tests (strip decomposition, ghost exchange)
 - Conservation: 10 tests (mass conservation, accuracy)
 
-## 🔧 Advanced Usage
+## Advanced Usage
 
 ### Custom Initial Conditions
 
@@ -196,7 +196,7 @@ squeue -j JOBID
 
 See [docs/HPC_DEPLOYMENT.md](docs/HPC_DEPLOYMENT.md) for cluster-specific configuration.
 
-## 📊 Performance Profiling
+## Performance Profiling
 
 Profile GPU kernels:
 
@@ -213,7 +213,7 @@ with profiler.profile(
 prof.key_averages().table(sort_by='cuda_time_total')
 ```
 
-## 🎓 Key Findings
+## Key Findings
 
 ### GPU Acceleration Reality Check
 - **Small grids (≤256×256):** GPU *slower* than CPU (overhead dominates)
@@ -227,7 +227,7 @@ prof.key_averages().table(sort_by='cuda_time_total')
 - **GPU vs CPU accuracy:** L2 error = 3.39e-08 (acceptable floating-point variation)
 - **Numerical stability:** CFL condition satisfied for all configurations
 
-## 📝 Configuration
+## Configuration
 
 Create `config.local.py` for custom settings (git-ignored):
 
@@ -239,7 +239,7 @@ DEFAULT_TIMESTEPS = 100
 CONSERVATION_TOLERANCE = 1e-5
 ```
 
-## 🛠️ Dependencies
+## Dependencies
 
 See [requirements.txt](requirements.txt) for full list:
 - **PyTorch** 2.0+ (CPU and CUDA)
@@ -251,7 +251,7 @@ See [requirements.txt](requirements.txt) for full list:
 - **matplotlib** - for visualization
 - **seaborn** - for publication-quality plots
 
-## 🤝 Contributing
+## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on:
 - Code style (PEP 8, type hints)
@@ -259,11 +259,11 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on:
 - Benchmarking changes
 - Documentation updates
 
-## 📄 License
+## License
 
 MIT License — see [LICENSE](LICENSE) for details. Free for academic and commercial use.
 
-## 🔬 Citing This Work
+## Citing This Work
 
 If you use this solver in research, please cite:
 
@@ -276,7 +276,7 @@ If you use this solver in research, please cite:
 }
 ```
 
-## 📞 Support & Questions
+## Support & Questions
 
 - **Documentation:** See [docs/](docs/) directory
 - **Technical Report:** [outputs/GPU_ANALYSIS_REPORT.md](outputs/GPU_ANALYSIS_REPORT.md)
@@ -284,7 +284,7 @@ If you use this solver in research, please cite:
 - **Issues:** GitHub Issues (once public)
 - **Email:** [Your contact info]
 
-## 🎯 Roadmap
+## Roadmap
 
 - [x] Core solver implementation (12/12 tests)
 - [x] GPU acceleration (V100 validated)
@@ -296,7 +296,7 @@ If you use this solver in research, please cite:
 - [ ] Integration with simulation frameworks
 - [ ] Publication of findings
 
-## ⚡ Performance Tips
+## Performance Tips
 
 1. **Choose device based on grid size** (see GPU Performance table)
 2. **Use domain decomposition** for grids >512×512 with multiple GPUs
@@ -304,13 +304,13 @@ If you use this solver in research, please cite:
 4. **Profile before optimizing** (use torch.profiler)
 5. **Batch independent simulations** for better GPU utilization
 
-## 🧠 Key Papers & References
+## Key Papers & References
 
 - Fisher-KPP: "On the Species Under the Influence of Internal Warfare" (1937)
 - GPU Computing: "Optimizing Heterogeneous Workloads" (Kirk & Hwu, 2012)
 - Numerical Methods: "Numerical Solution of PDEs" (LeVeque, 2007)
 
-## 📊 Acknowledgments
+## Acknowledgments
 
 - **Cluster:** Talon HPC at University of North Dakota
 - **Hardware:** Tesla V100-SXM2-32GB GPUs
@@ -318,4 +318,4 @@ If you use this solver in research, please cite:
 
 ---
 
-**Status:** Production-ready ✅ | Last Updated: July 2026 | Python 3.9+ | CUDA 12.0+
+**Status:** Production-ready | Last Updated: July 2026 | Python 3.9+ | CUDA 12.0+
