@@ -276,13 +276,6 @@ If you use this solver in research, please cite:
 }
 ```
 
-## Support & Questions
-
-- **Documentation:** See [docs/](docs/) directory
-- **Technical Report:** [outputs/GPU_ANALYSIS_REPORT.md](outputs/GPU_ANALYSIS_REPORT.md)
-- **Blog Post:** [TECH_BLOG_POST.md](TECH_BLOG_POST.md)
-- **Issues:** GitHub Issues (once public)
-- **Email:** [Your contact info]
 
 ## Roadmap
 
