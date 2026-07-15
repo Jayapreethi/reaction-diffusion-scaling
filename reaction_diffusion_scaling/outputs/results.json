@@ -1,0 +1,66 @@
+{
+  "parameters": {
+    "grid_size": 128,
+    "domain_size": 1.0,
+    "timesteps": 100,
+    "dt": 0.0001220703125,
+    "diffusion": 0.1,
+    "reaction_rate": 1.0,
+    "device": "cpu",
+    "seed": 42
+  },
+  "experiments": [
+    {
+      "num_partitions": 1,
+      "wall_clock_time": 0.03453310000031706,
+      "speedup": 1.0,
+      "efficiency": 1.0,
+      "conservation": {
+        "m_initial": 0.06185387820005417,
+        "m_final": 0.062272217124700546,
+        "m_change_actual": 0.00041833892464637756,
+        "m_change_expected": 0.00041833487671283365,
+        "abs_residual": 4.04793354391586e-09,
+        "rel_residual": 9.676299465448587e-06
+      }
+    },
+    {
+      "num_partitions": 2,
+      "wall_clock_time": 0.07846130000007179,
+      "speedup": 0.4401290827488898,
+      "efficiency": 22.00645413744449,
+      "conservation": {
+        "m_initial": 0.06185387820005417,
+        "m_final": 0.062272217124700546,
+        "m_change_actual": 0.00041833892464637756,
+        "m_change_expected": 0.00041833487671283365,
+        "abs_residual": 4.04793354391586e-09,
+        "rel_residual": 9.676299465448587e-06
+      },
+      "comparison": {
+        "max_abs_diff": 0.0,
+        "mean_abs_diff": 0.0,
+        "rel_l2_error": 0.0
+      }
+    },
+    {
+      "num_partitions": 4,
+      "wall_clock_time": 0.10279279999986102,
+      "speedup": 0.33594862675560694,
+      "efficiency": 8.398715668890173,
+      "conservation": {
+        "m_initial": 0.06185387820005417,
+        "m_final": 0.062272217124700546,
+        "m_change_actual": 0.00041833892464637756,
+        "m_change_expected": 0.00041833487671283365,
+        "abs_residual": 4.04793354391586e-09,
+        "rel_residual": 9.676299465448587e-06
+      },
+      "comparison": {
+        "max_abs_diff": 0.0,
+        "mean_abs_diff": 0.0,
+        "rel_l2_error": 0.0
+      }
+    }
+  ]
+}

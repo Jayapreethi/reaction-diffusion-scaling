@@ -1,0 +1,33 @@
+{
+  "cpu": {
+    "time": 0.026262899999892397,
+    "metrics": {
+      "device": "cpu",
+      "grid_size": 128,
+      "timesteps": 50,
+      "num_partitions": 1,
+      "wall_clock_time": 0.026262899999892397,
+      "conservation": {
+        "m_initial": 0.06185387820005417,
+        "m_final": 0.06201586499810219,
+        "m_change_actual": 0.0001619867980480194,
+        "m_change_expected": 0.00016198724079877143,
+        "abs_residual": 4.4275075202241873e-10,
+        "rel_residual": 2.7332446051856165e-06
+      },
+      "u_initial_sum": 1013.4139404296875,
+      "u_final_sum": 1016.0679321289062,
+      "u_final_min": 3.1504757136424644e-10,
+      "u_final_max": 0.9068777561187744
+    },
+    "comparison": {
+      "bitwise_identical": true,
+      "max_abs_diff": 0.0,
+      "mean_abs_diff": 0.0,
+      "median_abs_diff": 0.0,
+      "rel_l2_error": 0.0,
+      "divergence_classification": "REFERENCE",
+      "expected_gpu_nondeterminism": false
+    }
+  }
+}

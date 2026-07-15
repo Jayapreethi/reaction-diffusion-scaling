@@ -1,0 +1,5 @@
+{
+  "cpu": {
+    "error": "Explicit scheme is unstable. dt=1.00e-04 > stability_limit=3.81e-05. Reduce dt or increase dx."
+  }
+}

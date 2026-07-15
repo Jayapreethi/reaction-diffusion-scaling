@@ -1,0 +1,65 @@
+{
+  "cpu": {
+    "time": 0.02825841400772333,
+    "metrics": {
+      "device": "cpu",
+      "grid_size": 128,
+      "timesteps": 50,
+      "num_partitions": 1,
+      "wall_clock_time": 0.02825841400772333,
+      "conservation": {
+        "m_initial": 0.06185387820005417,
+        "m_final": 0.06201586499810219,
+        "m_change_actual": 0.0001619867980480194,
+        "m_change_expected": 0.0001619872499257327,
+        "abs_residual": 4.51877713280582e-10,
+        "rel_residual": 2.7895881526939823e-06
+      },
+      "u_initial_sum": 1013.4139404296875,
+      "u_final_sum": 1016.0679321289062,
+      "u_final_min": 3.150476823865489e-10,
+      "u_final_max": 0.9068777561187744
+    },
+    "comparison": {
+      "bitwise_identical": true,
+      "max_abs_diff": 0.0,
+      "mean_abs_diff": 0.0,
+      "median_abs_diff": 0.0,
+      "rel_l2_error": 0.0,
+      "divergence_classification": "REFERENCE",
+      "expected_gpu_nondeterminism": false
+    }
+  },
+  "cuda:0": {
+    "time": 0.10562856495380402,
+    "speedup": 0.26752625125676915,
+    "metrics": {
+      "device": "cuda:0",
+      "grid_size": 128,
+      "timesteps": 50,
+      "num_partitions": 1,
+      "wall_clock_time": 0.10562856495380402,
+      "conservation": {
+        "m_initial": 0.06185388192534447,
+        "m_final": 0.06201586872339249,
+        "m_change_actual": 0.0001619867980480194,
+        "m_change_expected": 0.00016198725663125522,
+        "abs_residual": 4.5858323581104803e-10,
+        "rel_residual": 2.8309834078780366e-06
+      },
+      "u_initial_sum": 1013.4140014648438,
+      "u_final_sum": 1016.0679931640625,
+      "u_final_min": 3.150478489200026e-10,
+      "u_final_max": 0.9068777561187744
+    },
+    "comparison": {
+      "bitwise_identical": false,
+      "max_abs_diff": 1.1920928955078125e-07,
+      "mean_abs_diff": 1.458891452088551e-09,
+      "median_abs_diff": 7.275957614183426e-12,
+      "rel_l2_error": 3.386097946973585e-08,
+      "divergence_classification": "ACCEPTABLE_VARIATION (parallel reduction differences)",
+      "expected_gpu_nondeterminism": true
+    }
+  }
+}

@@ -1,0 +1,113 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv
+.conda/
+
+# PyTorch / TensorFlow
+*.pth
+*.pt
+*.pb
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Credentials and secrets
+.ssh/
+*.key
+*.pem
+*.pub
+.credentials
+config.local
+secrets.json
+.env
+.env.local
+
+# Cluster/server specific
+.xdg-log/
+slurm-*.out
+*.log
+debug-logs/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.cache
+*.old
+
+# System files
+Thumbs.db
+.AppleDouble
+.LSOverride
+
+# CUDA artifacts
+*.cubin
+*.ptx
+*.o
+
+# GPU memory dumps (if saved)
+cuda_*.dump
+gpu_profile_*.txt
+
+# Large data files (keep only aggregated results)
+*.large
+*.huge
+raw_data/
+
+# Specific outputs to exclude (keep only essential results)
+# But track the aggregated analysis results
+!/outputs/GPU_ANALYSIS_REPORT.md
+!/outputs/GPU_FRAMEWORK_SUMMARY.md
+!/outputs/cluster_gpu_results.json
+!/outputs/*.md
+
+# Generated visualizations (can be regenerated)
+*.png
+*.jpg
+*.jpeg
+
+# Test artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Node (if any JS tooling)
+node_modules/
+package-lock.json
+npm-debug.log
