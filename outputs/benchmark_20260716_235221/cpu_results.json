@@ -1,0 +1,146 @@
+{
+  "environment": {
+    "timestamp": "20260716_235221",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "processor": "Intel64 Family 6 Model 197 Stepping 2, GenuineIntel",
+    "python_version": "3.12.10",
+    "numpy_version": "1.26.4",
+    "config_file": "config\\benchmark_config.yaml",
+    "device": "CPU"
+  },
+  "config": {
+    "experiment": {
+      "name": "Fisher-KPP GPU vs CPU Scaling Study",
+      "version": "1.0",
+      "description": "Systematic performance and physics validation across grid sizes",
+      "date": "2026-07-16",
+      "contact": "jayapreethi.mohan@und.edu"
+    },
+    "physics": {
+      "pde": "Fisher-KPP reaction-diffusion",
+      "domain_type": "2D rectangular",
+      "boundary_conditions": "zero-flux (reflecting)",
+      "diffusion_coefficient": 0.1,
+      "reaction_rate": 0.5,
+      "timestep": 0.01,
+      "equation": "\u00e2\u02c6\u201au/\u00e2\u02c6\u201at = D\u00e2\u02c6\u2021\u00c2\u00b2u + ku(1-u)"
+    },
+    "benchmarking": {
+      "timesteps": 50,
+      "runs_per_grid": 5,
+      "synchronization": "proper",
+      "statistical_metric": "median"
+    },
+    "validation": {
+      "conservation_check": true,
+      "tolerance_conservation": "1e-5",
+      "accuracy_check": true,
+      "max_l2_error": "1e-7",
+      "cfl_check": true,
+      "stability_margin": 0.8
+    },
+    "resources": {
+      "cpu": {
+        "device": "cpu",
+        "backend": "pytorch"
+      },
+      "gpu": {
+        "device": "cuda:0",
+        "backend": "pytorch",
+        "hardware": "Tesla V100-SXM2-32GB",
+        "compute_capability": "7.0"
+      }
+    },
+    "slurm": {
+      "partition": "talon-gpu32",
+      "time_limit": "00:30:00",
+      "gpu_type": "v100",
+      "cores": 4,
+      "memory": "16GB",
+      "email_notifications": true
+    },
+    "output": {
+      "base_directory": "outputs",
+      "results_format": [
+        "json",
+        "csv",
+        "markdown"
+      ],
+      "timestamp_outputs": true,
+      "keep_intermediate": true
+    },
+    "reproducibility": {
+      "git_commit": "auto",
+      "environment_capture": true,
+      "random_seed": 42,
+      "create_metadata": true
+    },
+    "grid_sizes": [
+      128,
+      256,
+      512
+    ]
+  },
+  "benchmarks": [
+    {
+      "grid_size": 128,
+      "timesteps": 50,
+      "num_runs": 5,
+      "times_ms": [
+        6.404699990525842,
+        7.957399997394532,
+        7.29979999596253,
+        5.419900000561029,
+        5.738400010159239
+      ],
+      "median_ms": 6.404699990525842,
+      "mean_ms": 6.564039998920634,
+      "stdev_ms": 0.948569641487409,
+      "min_ms": 5.419900000561029,
+      "max_ms": 7.957399997394532,
+      "initial_mass": 0.09971421369864379,
+      "final_mass": 0.5146630293726636,
+      "mass_change": 0.4149488156740198
+    },
+    {
+      "grid_size": 256,
+      "timesteps": 50,
+      "num_runs": 5,
+      "times_ms": [
+        129.36479999916628,
+        191.9097000209149,
+        123.91880000359379,
+        119.18609999702312,
+        130.65110001480207
+      ],
+      "median_ms": 129.36479999916628,
+      "mean_ms": 139.00610000710003,
+      "stdev_ms": 26.765689256700426,
+      "min_ms": 119.18609999702312,
+      "max_ms": 191.9097000209149,
+      "initial_mass": 0.09893372657797969,
+      "final_mass": 0.5193848519901078,
+      "mass_change": 0.42045112541212804
+    },
+    {
+      "grid_size": 512,
+      "timesteps": 50,
+      "num_runs": 5,
+      "times_ms": [
+        988.5034000035375,
+        1051.9271999946795,
+        736.7230000090785,
+        720.2324999962002,
+        826.3519999745768
+      ],
+      "median_ms": 826.3519999745768,
+      "mean_ms": 864.7476199956145,
+      "stdev_ms": 133.49219836525114,
+      "min_ms": 720.2324999962002,
+      "max_ms": 1051.9271999946795,
+      "initial_mass": 0.09854690218462075,
+      "final_mass": 0.47792785720265857,
+      "mass_change": 0.3793809550180378
+    }
+  ]
+}

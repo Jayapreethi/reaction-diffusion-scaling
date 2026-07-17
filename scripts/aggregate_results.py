@@ -95,6 +95,15 @@ class ResultAggregator:
         """Generate comprehensive markdown report."""
         speedups = self.compute_speedups()
         
+        # Compute aggregate statistics
+        cpu_times = []
+        gpu_times = []
+        for grid_key in self.cpu_results:
+            if "error" not in self.cpu_results[grid_key]:
+                cpu_times.append(self.cpu_results[grid_key].get("median_time_ms", 0))
+            if grid_key in self.gpu_results and "error" not in self.gpu_results[grid_key]:
+                gpu_times.append(self.gpu_results[grid_key].get("median_time_ms", 0))
+        
         report = f"""# Fisher-KPP Benchmark Report
 **Run ID:** {self.metadata.get('run_id', 'N/A')}
 **Date:** {self.metadata.get('timestamp', 'N/A')}
@@ -105,6 +114,16 @@ class ResultAggregator:
 - **CUDA:** {self.metadata.get('cuda_version', 'N/A')}
 - **GPU:** {self.metadata.get('gpu_device', 'N/A')}
 - **Git:** {self.metadata.get('git_commit', 'N/A')[:8]}
+
+## Aggregate Summary
+
+| Metric | CPU | GPU |
+|--------|-----|-----|
+| Average Time (ms) | {np.mean(cpu_times):.2f} | {np.mean(gpu_times):.2f} |
+| Min Time (ms) | {min(cpu_times):.2f} | {min(gpu_times):.2f} |
+| Max Time (ms) | {max(cpu_times):.2f} | {max(gpu_times):.2f} |
+| Grid Sizes Tested | {len(self.cpu_results)} | {len(self.gpu_results)} |
+| Average Speedup | — | {np.mean(list(speedups.values())):.2f}x |
 
 ## Performance Comparison
 

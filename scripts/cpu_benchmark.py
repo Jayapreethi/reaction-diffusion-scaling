@@ -217,6 +217,20 @@ class CPUBenchmark:
             f.write(f"**Python:** {metadata['environment']['python_version']}\n\n")
             f.write(f"**NumPy:** {metadata['environment']['numpy_version']}\n\n")
             
+            # Aggregate statistics
+            all_medians = [r['median_ms'] for r in metadata["benchmarks"]]
+            all_means = [r['mean_ms'] for r in metadata["benchmarks"]]
+            
+            f.write("## Aggregate Summary\n\n")
+            f.write("| Statistic | Value (ms) |\n")
+            f.write("|-----------|-----------:|\n")
+            f.write(f"| Average Median Time | {np.mean(all_medians):.2f} |\n")
+            f.write(f"| Average Mean Time | {np.mean(all_means):.2f} |\n")
+            f.write(f"| Min Time (all runs) | {min(all_medians):.2f} |\n")
+            f.write(f"| Max Time (all runs) | {max(all_medians):.2f} |\n")
+            f.write(f"| Grid Sizes Tested | {len(metadata['benchmarks'])} |\n")
+            f.write(f"| Total Runs | {len(metadata['benchmarks']) * metadata['benchmarks'][0]['num_runs']} |\n\n")
+            
             f.write("## Performance Summary\n\n")
             f.write("| Grid Size | Median (ms) | Mean (ms) | Min (ms) | Max (ms) | Stdev (ms) |\n")
             f.write("|-----------|-------------|-----------|----------|----------|------------|\n")
@@ -254,8 +268,26 @@ class CPUBenchmark:
         """Generate CSV report."""
         csv_file = self.output_dir / "CPU_BENCHMARK_RESULTS.csv"
         
+        # Aggregate statistics
+        all_medians = [r['median_ms'] for r in metadata["benchmarks"]]
+        all_means = [r['mean_ms'] for r in metadata["benchmarks"]]
+        
         with open(csv_file, "w", newline="") as f:
             writer = csv.writer(f)
+            
+            # Summary section
+            writer.writerow(["Aggregate Summary"])
+            writer.writerow(["Statistic", "Value (ms)"])
+            writer.writerow(["Average Median Time", f"{np.mean(all_medians):.4f}"])
+            writer.writerow(["Average Mean Time", f"{np.mean(all_means):.4f}"])
+            writer.writerow(["Min Time (all runs)", f"{min(all_medians):.4f}"])
+            writer.writerow(["Max Time (all runs)", f"{max(all_medians):.4f}"])
+            writer.writerow(["Grid Sizes Tested", len(metadata["benchmarks"])])
+            writer.writerow(["Total Runs", len(metadata["benchmarks"]) * metadata["benchmarks"][0]["num_runs"]])
+            writer.writerow([])  # Blank line
+            
+            # Detailed results
+            writer.writerow(["Detailed Results"])
             writer.writerow([
                 "Grid Size",
                 "Median (ms)",

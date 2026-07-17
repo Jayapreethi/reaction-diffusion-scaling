@@ -1,0 +1,14 @@
+Aggregate Summary
+Statistic,Value (ms)
+Average Median Time,320.7072
+Average Mean Time,336.7726
+Min Time (all runs),6.4047
+Max Time (all runs),826.3520
+Grid Sizes Tested,3
+Total Runs,15
+
+Detailed Results
+Grid Size,Median (ms),Mean (ms),Stdev (ms),Min (ms),Max (ms),Initial Mass,Final Mass,Mass Change
+128x128,6.4047,6.5640,0.9486,5.4199,7.9574,0.09971421,0.51466303,0.41494882
+256x256,129.3648,139.0061,26.7657,119.1861,191.9097,0.09893373,0.51938485,0.42045113
+512x512,826.3520,864.7476,133.4922,720.2325,1051.9272,0.09854690,0.47792786,0.37938096
