@@ -1,11 +1,12 @@
-.PHONY: help benchmark benchmark-cpu benchmark-cluster benchmark-local-only results clean docs
+.PHONY: help benchmark benchmark-cpu benchmark-cpu-simple benchmark-cluster benchmark-local-only results clean docs
 
 # Fisher-KPP GPU/CPU Benchmark Pipeline
 # National Lab Standard for Reproducible Computational Science
 #
 # Common targets:
 #   make benchmark          - Full pipeline (CPU local + GPU cluster)
-#   make benchmark-cpu      - CPU benchmarks only
+#   make benchmark-cpu      - CPU benchmarks only (via orchestrator)
+#   make benchmark-cpu-simple - CPU benchmarks only (simple NumPy, no PyTorch)
 #   make benchmark-cluster  - Submit cluster jobs only
 #   make results            - Aggregate results from latest run
 #   make docs               - Generate documentation
@@ -17,35 +18,44 @@ help:
 	@echo "Usage: make [target]"
 	@echo ""
 	@echo "Targets:"
-	@echo "  benchmark           Full pipeline (CPU + cluster GPU)"
-	@echo "  benchmark-cpu       CPU benchmarks only (fast, local)"
-	@echo "  benchmark-cluster   Submit GPU jobs to Talon (no local CPU)"
-	@echo "  results             Aggregate and report latest results"
-	@echo "  docs                Generate pipeline documentation"
-	@echo "  clean               Clean output directories"
-	@echo "  help                Show this message"
+	@echo "  benchmark              Full pipeline (CPU + cluster GPU)"
+	@echo "  benchmark-cpu          CPU benchmarks (full orchestrator)"
+	@echo "  benchmark-cpu-simple   CPU benchmarks (pure NumPy, no GPU/PyTorch)"
+	@echo "  benchmark-cluster      Submit GPU jobs to Talon (no local CPU)"
+	@echo "  results                Aggregate and report latest results"
+	@echo "  docs                   Generate pipeline documentation"
+	@echo "  clean                  Clean output directories"
+	@echo "  help                   Show this message"
 	@echo ""
 	@echo "Configuration: config/benchmark_config.yaml"
 	@echo "Results: outputs/benchmark_*/"
 
 benchmark:
-	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+	@echo "=========================================="
 	@echo "FULL PIPELINE: CPU BENCHMARKS + CLUSTER GPU JOBS"
-	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+	@echo "=========================================="
 	python3 scripts/run_benchmark_suite.py --config config/benchmark_config.yaml
 
 benchmark-cpu:
-	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+	@echo "=========================================="
 	@echo "CPU BENCHMARKS ONLY (Local Machine)"
-	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+	@echo "=========================================="
 	python3 scripts/run_benchmark_suite.py --local-only --config config/benchmark_config.yaml
 	@echo ""
-	@echo "✓ Check outputs/ for results"
+	@echo "Check outputs/ for results"
+
+benchmark-cpu-simple:
+	@echo "=========================================="
+	@echo "CPU BENCHMARKS (Pure NumPy, No PyTorch)"
+	@echo "=========================================="
+	python3 scripts/cpu_benchmark.py --config config/benchmark_config.yaml
+	@echo ""
+	@echo "Check outputs/ for results"
 
 benchmark-cluster:
-	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+	@echo "=========================================="
 	@echo "SUBMIT GPU JOBS TO TALON CLUSTER"
-	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+	@echo "=========================================="
 	python3 scripts/run_benchmark_suite.py --cluster-only --config config/benchmark_config.yaml
 	@echo ""
 	@echo "Monitor jobs with: squeue -u jayapreethi.mohan"

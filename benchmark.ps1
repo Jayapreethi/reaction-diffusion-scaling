@@ -30,23 +30,15 @@ function Show-Help {
 
 function Invoke-BenchmarkCPU {
     Write-Host "=========================================="
-    Write-Host "CPU BENCHMARKS (via Talon Cluster)"
+    Write-Host "CPU BENCHMARKS (Pure NumPy, No GPU)"
     Write-Host "=========================================="
     Write-Host ""
     
-    python scripts/cluster_runner.py
+    python scripts/cpu_benchmark.py --config config/benchmark_config.yaml
     
     if ($LASTEXITCODE -eq 0) {
         Write-Host ""
         Write-Host "Benchmarking complete. Check outputs/ for results."
-    } else {
-        Write-Host ""
-        Write-Host "SSH connection failed. To enable automated access:"
-        Write-Host "  1. Read: ./SSH_SETUP.md"
-        Write-Host "  2. Run: ssh-keygen -t rsa -b 4096 -N """" -f ~/.ssh/id_rsa"
-        Write-Host "  3. Copy key: cat ~/.ssh/id_rsa.pub | ssh jayapreethi.mohan@talon.und.edu 'cat >> ~/.ssh/authorized_keys'"
-        Write-Host ""
-        Write-Host "Or use manual SSH commands - see WINDOWS_SETUP.md"
     }
 }
 
