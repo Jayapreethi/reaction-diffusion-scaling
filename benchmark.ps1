@@ -1,13 +1,11 @@
 # Fisher-KPP Benchmark Pipeline for Windows
-# PowerShell wrapper providing `make` equivalents for Windows users
+# PowerShell wrapper providing make equivalents for Windows users
 
 param(
     [Parameter(Position=0)]
     [ValidateSet("benchmark-cpu", "benchmark", "benchmark-cluster", "results", "status", "docs", "clean", "help")]
     [string]$Target = "help"
 )
-
-$ErrorActionPreference = "Stop"
 
 function Show-Help {
     Write-Host "Fisher-KPP Benchmark Pipeline (Windows)"
@@ -31,55 +29,62 @@ function Show-Help {
 }
 
 function Invoke-BenchmarkCPU {
-    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    Write-Host "CPU BENCHMARKS ONLY (Local Machine)"
-    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    Write-Host "=========================================="
+    Write-Host "CPU BENCHMARKS (via Talon Cluster)"
+    Write-Host "=========================================="
     Write-Host ""
     
-    & python scripts/run_benchmark_suite.py --local-only --config config/benchmark_config.yaml
+    python scripts/cluster_runner.py
     
     if ($LASTEXITCODE -eq 0) {
         Write-Host ""
-        Write-Host "✓ Benchmarking complete"
-        Write-Host "Results: $(Get-ChildItem outputs/benchmark_*/ -Directory | Sort-Object { $_.LastWriteTime } -Descending | Select-Object -First 1 | ForEach-Object { $_.FullName })"
+        Write-Host "Benchmarking complete. Check outputs/ for results."
+    } else {
+        Write-Host ""
+        Write-Host "SSH connection failed. To enable automated access:"
+        Write-Host "  1. Read: ./SSH_SETUP.md"
+        Write-Host "  2. Run: ssh-keygen -t rsa -b 4096 -N """" -f ~/.ssh/id_rsa"
+        Write-Host "  3. Copy key: cat ~/.ssh/id_rsa.pub | ssh jayapreethi.mohan@talon.und.edu 'cat >> ~/.ssh/authorized_keys'"
+        Write-Host ""
+        Write-Host "Or use manual SSH commands - see WINDOWS_SETUP.md"
     }
 }
 
 function Invoke-Benchmark {
-    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    Write-Host "=========================================="
     Write-Host "FULL PIPELINE: CPU + CLUSTER GPU"
-    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    Write-Host "=========================================="
     Write-Host ""
     
-    & python scripts/run_benchmark_suite.py --config config/benchmark_config.yaml
+    python scripts/run_benchmark_suite.py --config config/benchmark_config.yaml
 }
 
 function Invoke-BenchmarkCluster {
-    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    Write-Host "=========================================="
     Write-Host "SUBMIT GPU JOBS TO TALON CLUSTER"
-    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    Write-Host "=========================================="
     Write-Host ""
     
-    & python scripts/run_benchmark_suite.py --cluster-only --config config/benchmark_config.yaml
+    python scripts/run_benchmark_suite.py --cluster-only --config config/benchmark_config.yaml
     
     Write-Host ""
     Write-Host "Monitor jobs: ssh jayapreethi.mohan@talon.und.edu squeue"
 }
 
 function Invoke-Results {
-    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    Write-Host "=========================================="
     Write-Host "AGGREGATING LATEST RESULTS"
-    Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    Write-Host "=========================================="
     Write-Host ""
     
-    $LatestRun = Get-ChildItem outputs/benchmark_*/ -Directory | Sort-Object { $_.LastWriteTime } -Descending | Select-Object -First 1
+    $LatestRun = Get-ChildItem outputs/benchmark_*/ -Directory -ErrorAction SilentlyContinue | Sort-Object { $_.LastWriteTime } -Descending | Select-Object -First 1
     
     if ($LatestRun) {
         Write-Host "Processing: $($LatestRun.FullName)"
-        & python scripts/aggregate_results.py --run-dir $LatestRun.FullName
+        python scripts/aggregate_results.py --run-dir $LatestRun.FullName
     }
     else {
-        Write-Host "❌ No benchmark results found in outputs/"
+        Write-Host "No benchmark results found in outputs/"
     }
 }
 
@@ -119,13 +124,13 @@ function Show-Status {
             Write-Host "Run: $($Run.Name)"
             
             if (Test-Path "$($Run.FullName)/metadata.json") {
-                Write-Host "  ✓ Environment captured"
+                Write-Host "  [OK] Environment captured"
             }
             if (Test-Path "$($Run.FullName)/cpu_results.json") {
-                Write-Host "  ✓ CPU results available"
+                Write-Host "  [OK] CPU results available"
             }
             if (Test-Path "$($Run.FullName)/BENCHMARK_REPORT.md") {
-                Write-Host "  ✓ Report generated"
+                Write-Host "  [OK] Report generated"
             }
             Write-Host ""
         }
@@ -138,7 +143,7 @@ function Show-Status {
 function Invoke-Clean {
     Write-Host "Cleaning benchmark outputs..."
     Remove-Item -Path "outputs/benchmark_*" -Recurse -Force -ErrorAction SilentlyContinue
-    Write-Host "✓ Cleaned"
+    Write-Host "Cleaned"
 }
 
 # Route to appropriate function
