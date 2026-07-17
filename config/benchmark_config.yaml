@@ -1,0 +1,91 @@
+# Benchmark Configuration for Fisher-KPP GPU/CPU Comparison
+# National Lab Standard for Reproducible Computational Science
+# 
+# This file defines all experiment parameters, ensuring reproducibility
+# across runs, environments, and organizations.
+
+experiment:
+  name: "Fisher-KPP GPU vs CPU Scaling Study"
+  version: "1.0"
+  description: "Systematic performance and physics validation across grid sizes"
+  date: "2026-07-16"
+  contact: "jayapreethi.mohan@und.edu"
+
+# Physics Parameters (invariant across all runs)
+physics:
+  pde: "Fisher-KPP reaction-diffusion"
+  domain_type: "2D rectangular"
+  boundary_conditions: "zero-flux (reflecting)"
+  diffusion_coefficient: 0.1  # D
+  reaction_rate: 0.5           # k
+  timestep: 0.01               # dt
+  equation: "∂u/∂t = D∇²u + ku(1-u)"
+
+# Grid Sizes to Benchmark
+# Chosen to span CPU-dominant → GPU-dominant regime
+grids:
+  - size: [128, 128]
+    elements: 16384
+    description: "Small: GPU overhead dominates"
+  - size: [256, 256]
+    elements: 65536
+    description: "Medium: Near breakeven point"
+  - size: [512, 512]
+    elements: 262144
+    description: "Large: GPU speedup visible"
+  - size: [1024, 1024]
+    elements: 1048576
+    description: "Very large: GPU strongly preferred"
+
+# Benchmark Parameters
+benchmarking:
+  timesteps: 50
+  runs_per_grid: 5              # N=5 for statistical rigor
+  synchronization: "proper"     # CUDA sync before/after timing
+  statistical_metric: "median"  # Use median, not mean (robust to outliers)
+
+# Physics Validation
+validation:
+  conservation_check: true
+  tolerance_conservation: 1e-5  # residual < 1e-5 is excellent
+  accuracy_check: true
+  max_l2_error: 1e-7           # GPU vs CPU L2 error threshold
+  cfl_check: true
+  stability_margin: 0.8        # dt must be ≤ 0.8 × CFL limit
+
+# Compute Resources
+resources:
+  cpu:
+    device: "cpu"
+    backend: "pytorch"
+  gpu:
+    device: "cuda:0"
+    backend: "pytorch"
+    hardware: "Tesla V100-SXM2-32GB"
+    compute_capability: "7.0"
+
+# SLURM Configuration (for Talon cluster)
+slurm:
+  partition: "talon-gpu32"
+  time_limit: "00:30:00"
+  gpu_type: "v100"
+  cores: 4
+  memory: "16GB"
+  email_notifications: true
+
+# Output Configuration
+output:
+  base_directory: "outputs"
+  results_format:
+    - "json"      # Machine-readable, preserves full precision
+    - "csv"       # Tabular, easy for spreadsheets
+    - "markdown"  # Human-readable report
+  timestamp_outputs: true
+  keep_intermediate: true
+
+# Reproducibility Tracking
+reproducibility:
+  git_commit: "auto"              # Auto-capture current git state
+  environment_capture: true       # Log Python/PyTorch/CUDA versions
+  random_seed: 42                 # For initial field generation
+  create_metadata: true           # Include run metadata in results
