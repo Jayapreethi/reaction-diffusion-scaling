@@ -88,14 +88,22 @@ class BenchmarkOrchestrator:
             "timestamp": self.timestamp,
             "run_id": self.run_id,
             "python_version": f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}",
-            "pytorch_version": torch.__version__,
-            "cuda_available": torch.cuda.is_available(),
+            "pytorch_version": getattr(torch, "__version__", "unknown"),
         }
         
-        if torch.cuda.is_available():
-            metadata["cuda_version"] = torch.version.cuda
-            metadata["gpu_device"] = torch.cuda.get_device_name(0)
-            metadata["gpu_capability"] = torch.cuda.get_device_capability(0)
+        # Safely check CUDA availability
+        try:
+            metadata["cuda_available"] = torch.cuda.is_available()
+        except:
+            metadata["cuda_available"] = False
+            
+        if metadata.get("cuda_available"):
+            try:
+                metadata["cuda_version"] = getattr(torch.version, "cuda", "unknown")
+                metadata["gpu_device"] = torch.cuda.get_device_name(0)
+                metadata["gpu_capability"] = torch.cuda.get_device_capability(0)
+            except:
+                pass
         
         # Capture git state
         try:
